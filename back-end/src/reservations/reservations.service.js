@@ -22,7 +22,7 @@ function read(reservation_id) {
   return knex("reservations").select("*").where({ reservation_id }).first();
 }
 
-function updateStatus(updatedReservation) {
+function update(updatedReservation) {
   return knex("reservations")
     .select("*")
     .where({ reservation_id: updatedReservation.reservation_id })
@@ -43,7 +43,7 @@ module.exports = {
   create,
   list,
   read,
-  updateStatus,
+  update,
   listForDate,
   search,
 };

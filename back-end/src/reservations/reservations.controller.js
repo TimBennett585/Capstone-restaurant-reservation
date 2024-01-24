@@ -1,6 +1,7 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const { isValid, parseISO, parse } = require("date-fns");
+const { as } = require("../db/connection");
 
 //Validation middleware
 
@@ -192,8 +193,15 @@ async function updateStatus(req, res) {
     ...reservation,
     status: req.body.data.status,
   };
-  const data = await service.updateStatus(newReservation);
+  const data = await service.update(newReservation);
   res.json({ data });
+}
+
+//Executive function to update the reservation information itself
+async function updateReservation(req, res) {
+  const reservation = req.body.data;
+  const data = await service.update(reservation);
+  res.status(200).json({ data });
 }
 
 module.exports = {
@@ -220,5 +228,23 @@ module.exports = {
     checkStatus,
     reservationFinished,
     asyncErrorBoundary(updateStatus),
+  ],
+  updateReservation: [
+    bodyDataHas("first_name"),
+    bodyDataHas("last_name"),
+    bodyDataHas("mobile_number"),
+    bodyDataHas("reservation_date"),
+    bodyDataHas("reservation_time"),
+    bodyDataHas("people"),
+    asyncErrorBoundary(reservationExists),
+    dateIsValid,
+    timeIsValid,
+    dateIsOpen,
+    dateIsInFuture,
+    isDuringBusinessHours,
+    peopleNumberIsValid,
+    checkStatus,
+    reservationFinished,
+    asyncErrorBoundary(updateReservation),
   ],
 };
