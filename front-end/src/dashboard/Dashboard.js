@@ -146,6 +146,8 @@ function Dashboard() {
             <th>Party Size</th>
             <th>Reservation Status</th>
             <th>Seat the Party</th>
+            <th>Edit Reservation</th>
+            <th>Cancel Reservation</th>
           </tr>
         </thead>
         <tbody>
@@ -154,6 +156,7 @@ function Dashboard() {
               reservation={reservation}
               date={currentDate}
               key={index}
+              loadDashboard={loadDashboard}
             />
           ))}
         </tbody>

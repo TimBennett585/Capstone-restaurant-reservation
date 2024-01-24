@@ -1,11 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { setReservationStatus } from "../utils/api";
 
-function ReservationsList({ reservation, date }) {
+function ReservationsList({ reservation, date, loadDashboard }) {
+  const [error, setError] = useState(null);
+  const history = useHistory();
+
+  function handleCancel(reservationID) {
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      )
+    ) {
+      const abortController = new AbortController();
+      setError(null);
+      setReservationStatus(reservationID, "cancelled", abortController.signal)
+        .then(() => {
+          loadDashboard();
+          history.push("/dashboard");
+        })
+        .catch(setError);
+      return () => abortController.abort();
+    }
+  }
   //If there are reservations on the passed in date, lists those
   if (
     reservation.reservation_date === date &&
-    reservation.status !== "finished"
+    reservation.status !== "finished" &&
+    reservation.status !== "cancelled"
   ) {
     return (
       <tr>
@@ -23,6 +45,24 @@ function ReservationsList({ reservation, date }) {
             <Link to={`/reservations/${reservation.reservation_id}/seat`}>
               <button>Seat</button>
             </Link>
+          ) : (
+            <></>
+          )}
+        </td>
+        <td>
+          {reservation.status === "booked" || reservation.status === null ? (
+            <Link to={`/reservations/${reservation.reservation_id}/edit`}>
+              <button className="btn btn-primary">Edit</button>
+            </Link>
+          ) : (
+            <></>
+          )}
+        </td>
+        <td data-reservation-id-cancel={reservation.reservation_id}>
+          {reservation.status === "booked" || reservation.status === null ? (
+            <button onClick={() => handleCancel(reservation.reservation_id)}>
+              Cancel
+            </button>
           ) : (
             <></>
           )}
@@ -46,6 +86,24 @@ function ReservationsList({ reservation, date }) {
             <Link to={`/reservations/${reservation.reservation_id}/seat`}>
               <button>Seat</button>
             </Link>
+          ) : (
+            <></>
+          )}
+        </td>
+        <td>
+          {reservation.status === "booked" || reservation.status === null ? (
+            <Link to={`/reservations/${reservation.reservation_id}/edit`}>
+              <button className="btn btn-primary">Edit</button>
+            </Link>
+          ) : (
+            <></>
+          )}
+        </td>
+        <td data-reservation-id-cancel={reservation.reservation_id}>
+          {reservation.status === "booked" || reservation.status === null ? (
+            <button onClick={() => handleCancel(reservation.reservation_id)}>
+              Cancel
+            </button>
           ) : (
             <></>
           )}
