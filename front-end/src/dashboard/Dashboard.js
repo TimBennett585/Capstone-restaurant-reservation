@@ -14,7 +14,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import TablesList from "./TablesList";
 
-function Dashboard() {
+function Dashboard({ date }) {
   const history = useHistory();
   const query = useQuery();
   const [reservations, setReservations] = useState([]);
@@ -25,7 +25,7 @@ function Dashboard() {
 
   useEffect(loadDashboard, [currentDate]);
 
-  async function loadDashboard() {
+  async function loadDashboard(date = null) {
     const abortController = new AbortController();
     setReservationsError(null);
 
@@ -68,41 +68,6 @@ function Dashboard() {
     setCurrentDate(today());
     history.push("/dashboard");
   }
-
-  /* if (!currentDate || !dateFormat.test(currentDate)) {
-    return (
-      <main>
-        <h1>Dashboard</h1>
-        <div className="d-md-flex mb-3">
-          <h4 className="mb-0">Reservations for date: {currentDate}</h4>
-        </div>
-        <div>
-          <button
-            onClick={() => handlePrevious()}
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            Previous Day
-          </button>
-          <button
-            onClick={() => handleToday()}
-            type="button"
-            className="btn btn-primary btn-sm"
-          >
-            Today
-          </button>
-          <button
-            onClick={() => handleNext()}
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            Next Day
-          </button>
-        </div>
-        <ErrorAlert error="Invalid date format" />
-      </main>
-    );
-  } */
 
   return (
     <main>

@@ -6,24 +6,45 @@ function ReservationsList({ reservation, date, loadDashboard }) {
   const [error, setError] = useState(null);
   const history = useHistory();
 
-  function handleCancel(reservationID) {
+  //Window confirm and change reservation status upon hitting Cancel
+  async function handleCancel(reservationID) {
     if (
       window.confirm(
         "Do you want to cancel this reservation? This cannot be undone."
       )
     ) {
-      const abortController = new AbortController();
-      setError(null);
-      setReservationStatus(reservationID, "cancelled", abortController.signal)
-        .then(() => {
-          loadDashboard();
-          history.push("/dashboard");
-        })
-        .catch(setError);
-      return () => abortController.abort();
+      try {
+        await cancelReservation(reservationID);
+        afterCancellation();
+        loadDashboard();
+      } catch (error) {
+        setError(error);
+      }
     }
   }
-  //If there are reservations on the passed in date, lists those
+
+  async function cancelReservation(reservationID) {
+    const abortController = new AbortController();
+    setError(null);
+
+    try {
+      await setReservationStatus(
+        reservationID,
+        "cancelled",
+        abortController.signal
+      );
+    } finally {
+      abortController.abort();
+    }
+  }
+
+  function afterCancellation() {
+    // Additional actions after successful cancellation
+    // For example, updating the UI or triggering a reload
+    history.push("/dashboard");
+  }
+
+  //Lists reservations based on date and/or "status"
   if (
     reservation.reservation_date === date &&
     reservation.status !== "finished" &&

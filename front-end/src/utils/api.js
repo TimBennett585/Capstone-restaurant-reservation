@@ -185,5 +185,20 @@ export async function setReservationStatus(reservation_id, status, signal) {
     body: JSON.stringify({ data: { status } }),
     signal,
   };
-  return await fetchJson(url, options, {});
+
+  try {
+    const response = await fetch(url, options);
+    const responseData = await response.json();
+    console.log("Set Reservation Status Response:", responseData);
+
+    return {
+      redirected: response.redirected,
+      url: response.url,
+      status: response.status,
+      ok: response.ok,
+    };
+  } catch (error) {
+    console.error("Error in setReservationStatus:", error);
+    return Promise.reject(error);
+  }
 }

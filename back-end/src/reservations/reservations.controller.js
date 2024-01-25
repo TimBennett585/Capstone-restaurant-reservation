@@ -186,7 +186,7 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
 }
 
-//Executive function to update the status of a reservation
+// Executive function to update the status of a reservation
 async function updateStatus(req, res) {
   const { reservation } = res.locals;
   const newReservation = {
@@ -194,7 +194,10 @@ async function updateStatus(req, res) {
     status: req.body.data.status,
   };
   const data = await service.update(newReservation);
-  res.json({ data });
+  res.json({
+    data,
+    redirectTo: `/reservations?date=${reservation.reservation_date}`, // Include the desired query parameters
+  });
 }
 
 //Executive function to update the reservation information itself
