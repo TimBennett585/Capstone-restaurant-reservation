@@ -1,0 +1,22 @@
+.button {
+  justify-content: center;
+  margin-top: 10px;
+}
+
+h1 {
+  font-family: Poppins;
+  text-align: center;
+}
+
+h4 {
+  font-family: Poppins;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+div {
+  margin-bottom: 15px;
+  justify-content: center;
+}

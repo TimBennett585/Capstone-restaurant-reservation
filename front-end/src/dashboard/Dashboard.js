@@ -13,6 +13,7 @@ import {
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import TablesList from "./TablesList";
+import "./dashboard.css";
 
 function Dashboard({ date }) {
   const history = useHistory();
@@ -72,47 +73,50 @@ function Dashboard({ date }) {
   return (
     <main>
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date: {currentDate}</h4>
-      </div>
       <div>
-        <button
-          onClick={() => handlePrevious()}
-          type="button"
-          className="btn btn-secondary btn-sm"
-        >
-          Previous Day
-        </button>
-        <button
-          onClick={() => handleToday()}
-          type="button"
-          className="btn btn-primary btn-sm"
-        >
-          Today
-        </button>
-        <button
-          onClick={() => handleNext()}
-          type="button"
-          className="btn btn-secondary btn-sm"
-        >
-          Next Day
-        </button>
+        <h4>Reservations for date: {currentDate}</h4>
+      </div>
+      <div className="row">
+        <div className="btn-group" role="group" aria-label="Button Group">
+          <button
+            onClick={() => handlePrevious()}
+            type="button"
+            className="btn btn-secondary btn-sm"
+          >
+            Previous Day
+          </button>
+          <button
+            onClick={() => handleToday()}
+            type="button"
+            className="btn btn-primary btn-sm"
+          >
+            Today
+          </button>
+          <button
+            onClick={() => handleNext()}
+            type="button"
+            className="btn btn-secondary btn-sm"
+          >
+            Next Day
+          </button>
+        </div>
       </div>
       <ErrorAlert error={reservationsError} />
 
-      <table>
+      <table className="table">
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Mobile Number</th>
-            <th>Reservation Date</th>
-            <th>Reservation Time</th>
-            <th>Party Size</th>
-            <th>Reservation Status</th>
-            <th>Seat the Party</th>
-            <th>Edit Reservation</th>
-            <th>Cancel Reservation</th>
+            <th scope="col">Reservation ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Reservation Date</th>
+            <th scope="col">Reservation Time</th>
+            <th scope="col">Party Size</th>
+            <th scope="col">Reservation Status</th>
+            <th scope="col">Seat the Party</th>
+            <th scope="col">Edit Reservation</th>
+            <th scope="col">Cancel Reservation</th>
           </tr>
         </thead>
         <tbody>
@@ -126,12 +130,15 @@ function Dashboard({ date }) {
           ))}
         </tbody>
       </table>
-      <table>
+      <div>
+        <h4>Current Table Status</h4>
+      </div>
+      <table className="table">
         <thead>
           <tr>
-            <th>Table Name</th>
-            <th>Table Capacity</th>
-            <th>Table Status</th>
+            <th scope="col">Table Name</th>
+            <th scope="col">Table Capacity</th>
+            <th scope="col">Table Status</th>
           </tr>
         </thead>
         <tbody>

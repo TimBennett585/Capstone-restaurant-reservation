@@ -52,6 +52,7 @@ function ReservationsList({ reservation, date, loadDashboard }) {
   ) {
     return (
       <tr>
+        <th scope="row">{reservation.reservation_id}</th>
         <td>{reservation.first_name}</td>
         <td>{reservation.last_name}</td>
         <td>{reservation.mobile_number}</td>
@@ -73,7 +74,7 @@ function ReservationsList({ reservation, date, loadDashboard }) {
         <td>
           {reservation.status === "booked" || reservation.status === null ? (
             <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-              <button className="btn btn-primary">Edit</button>
+              <button>Edit</button>
             </Link>
           ) : (
             <></>
@@ -93,6 +94,7 @@ function ReservationsList({ reservation, date, loadDashboard }) {
   } else if (!date) {
     return (
       <tr>
+        <th scope="row">{reservation.reservation_id}</th>
         <td>{reservation.first_name}</td>
         <td>{reservation.last_name}</td>
         <td>{reservation.mobile_number}</td>
