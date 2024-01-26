@@ -3,6 +3,7 @@ import { listReservations } from "../utils/api";
 import { formatAsDate, formatAsTime } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "../dashboard/ReservationsList";
+import "./searchReservation.css";
 
 function SearchReservations() {
   const [reservations, setReservations] = useState([]);
@@ -44,17 +45,16 @@ function SearchReservations() {
           <h2>Find a reservation!</h2>
         </div>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="input-group-text">
             <input
               id="mobile_number"
               name="mobile_number"
               type="text"
-              placeholder="Enter customer phone number from reservation"
+              className="form-control"
+              placeholder="Enter phone number"
               onChange={(event) => setMobileNumber(event.target.value)}
               value={mobile_number}
             />
-          </div>
-          <div>
             <button className="btn btn-primary" type="submit">
               Find
             </button>
@@ -65,17 +65,19 @@ function SearchReservations() {
         <div>
           <div>
             <h3>Found Reservations</h3>
-            <table>
+            <table className="table">
               <thead>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Mobile Number</th>
-                  <th>Reservation Date</th>
-                  <th>Reservation Time</th>
-                  <th>Party Size</th>
-                  <th>Reservation Status</th>
-                  <th>Seat the Party</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Mobile Number</th>
+                  <th scope="col">Reservation Date</th>
+                  <th scope="col">Reservation Time</th>
+                  <th scope="col">Party Size</th>
+                  <th scope="col">Reservation Status</th>
+                  <th scope="col">Seat the Party</th>
+                  <th scope="col">Edit Reservation</th>
+                  <th scope="col">Cancel Reservation</th>
                 </tr>
               </thead>
               <tbody>

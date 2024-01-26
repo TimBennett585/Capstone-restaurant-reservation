@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import { createTable } from "../utils/api";
 import TableForm from "./TableForm";
+import "./tableForm.css";
 
 function CreateTable() {
   const [error, setError] = useState(null);

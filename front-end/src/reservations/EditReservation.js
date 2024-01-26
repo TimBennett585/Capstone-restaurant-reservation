@@ -54,6 +54,9 @@ function EditReservation() {
   return (
     <>
       <div>
+        <h1>Edit Reservation: {reservation.reservation_id}</h1>
+      </div>
+      <div>
         <ErrorAlert error={error} />
         <ReservationForm
           handleSubmit={handleSubmit}

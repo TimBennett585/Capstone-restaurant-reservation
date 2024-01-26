@@ -116,7 +116,7 @@ function ReservationsList({ reservation, date, loadDashboard }) {
         <td>
           {reservation.status === "booked" || reservation.status === null ? (
             <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-              <button className="btn btn-primary">Edit</button>
+              <button>Edit</button>
             </Link>
           ) : (
             <></>

@@ -4,6 +4,7 @@ import { formatAsDate } from "../utils/date-time";
 import { createReservation } from "../utils/api";
 import ReservationForm from "../reservations/ReservationForm";
 import ErrorAlert from "../layout/ErrorAlert";
+import "./reservationForm.css";
 
 function CreateReservation() {
   const history = useHistory();
@@ -59,13 +60,13 @@ function CreateReservation() {
 
   return (
     <>
-      <div className="row">
-        <div className="col">
+      <div>
+        <div>
           <h1>Add New Reservation</h1>
         </div>
       </div>
-      <div className="row">
-        <div className="col">
+      <div>
+        <div>
           <ErrorAlert error={error} />
           <ReservationForm
             handleChange={handleChange}
