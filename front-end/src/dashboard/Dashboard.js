@@ -8,6 +8,7 @@ import {
   formatAsDate,
   formatAsTime,
 } from "../utils/date-time";
+import useQuery from "../utils/useQuery";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import TablesList from "./TablesList";
@@ -15,21 +16,23 @@ import "./dashboard.css";
 
 function Dashboard({ date }) {
   const history = useHistory();
+  const query = useQuery();
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [currentDate, setCurrentDate] = useState(today());
+  const [queryDate, setQueryDate] = useState(query.get("date"));
 
-  useEffect(loadDashboard, [currentDate]);
+  useEffect(loadDashboard, [date]);
 
-  async function loadDashboard(date = today()) {
+  async function loadDashboard() {
     console.log("Loading Dashboard for date:", date);
     const abortController = new AbortController();
     setReservationsError(null);
 
     try {
       const [reservationsResponse, tablesResponse] = await Promise.all([
-        listReservations(formatAsDate(currentDate), abortController.signal),
+        listReservations({ date }, abortController.signal),
         listTables(abortController.signal),
       ]);
 
@@ -48,6 +51,12 @@ function Dashboard({ date }) {
     }
   }
 
+  // this use effect checks to the route, if it specifies a date, change the current date to the parameter
+  useEffect(() => {
+    if (queryDate) {
+      setCurrentDate(queryDate);
+    }
+  }, [queryDate]);
 
   function handleNext() {
     setCurrentDate(next(currentDate));

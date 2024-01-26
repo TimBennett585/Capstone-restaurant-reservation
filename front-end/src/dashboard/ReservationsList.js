@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { setReservationStatus } from "../utils/api";
+import { formatAsDate, formatAsTime } from "../utils/date-time";
 
 function ReservationsList({ reservation, date, loadDashboard }) {
   const [error, setError] = useState(null);
   const history = useHistory();
+
+  let formattedDate = formatAsDate(reservation.reservation_date);
 
   //Window confirm and change reservation status upon hitting Cancel
   async function handleCancel(reservationID) {
@@ -19,8 +22,8 @@ function ReservationsList({ reservation, date, loadDashboard }) {
       );
       try {
         await cancelReservation(reservationID);
-        //afterCancellation();
-        loadDashboard(reservation.reservation_date);
+        afterCancellation();
+        loadDashboard();
       } catch (error) {
         setError(error);
       }
