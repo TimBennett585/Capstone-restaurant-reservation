@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { listReservations, listTables } from "../utils/api";
-import useQuery from "../utils/useQuery";
 import {
   today,
   previous,
   next,
   formatAsDate,
   formatAsTime,
-  dateFormat,
 } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
@@ -17,22 +15,21 @@ import "./dashboard.css";
 
 function Dashboard({ date }) {
   const history = useHistory();
-  const query = useQuery();
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const [queryDate, setQueryDate] = useState(query.get("date"));
   const [currentDate, setCurrentDate] = useState(today());
 
   useEffect(loadDashboard, [currentDate]);
 
-  async function loadDashboard(date = null) {
+  async function loadDashboard(date = today()) {
+    console.log("Loading Dashboard for date:", date);
     const abortController = new AbortController();
     setReservationsError(null);
 
     try {
       const [reservationsResponse, tablesResponse] = await Promise.all([
-        listReservations(currentDate, abortController.signal),
+        listReservations(formatAsDate(currentDate), abortController.signal),
         listTables(abortController.signal),
       ]);
 
@@ -41,7 +38,7 @@ function Dashboard({ date }) {
         reservation_date: formatAsDate(reservation.reservation_date),
         reservation_time: formatAsTime(reservation.reservation_time),
       }));
-
+      console.log(formattedReservations);
       setReservations(formattedReservations);
       setTables(tablesResponse);
     } catch (error) {
@@ -51,11 +48,6 @@ function Dashboard({ date }) {
     }
   }
 
-  useEffect(() => {
-    if (queryDate) {
-      setCurrentDate(queryDate);
-    }
-  }, [queryDate]);
 
   function handleNext() {
     setCurrentDate(next(currentDate));

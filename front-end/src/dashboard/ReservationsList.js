@@ -13,10 +13,14 @@ function ReservationsList({ reservation, date, loadDashboard }) {
         "Do you want to cancel this reservation? This cannot be undone."
       )
     ) {
+      console.log(
+        "Reservation Date before cancellation:",
+        reservation.reservation_date
+      );
       try {
         await cancelReservation(reservationID);
-        afterCancellation();
-        loadDashboard();
+        //afterCancellation();
+        loadDashboard(reservation.reservation_date);
       } catch (error) {
         setError(error);
       }
@@ -47,8 +51,7 @@ function ReservationsList({ reservation, date, loadDashboard }) {
   //Lists reservations based on date and/or "status"
   if (
     reservation.reservation_date === date &&
-    reservation.status !== "finished" &&
-    reservation.status !== "cancelled"
+    reservation.status !== "finished"
   ) {
     return (
       <tr>

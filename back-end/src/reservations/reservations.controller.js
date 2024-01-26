@@ -1,7 +1,6 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const { isValid, parseISO, parse } = require("date-fns");
-const { as } = require("../db/connection");
 
 //Validation middleware
 
@@ -194,10 +193,7 @@ async function updateStatus(req, res) {
     status: req.body.data.status,
   };
   const data = await service.update(newReservation);
-  res.json({
-    data,
-    redirectTo: `/reservations?date=${reservation.reservation_date}`, // Include the desired query parameters
-  });
+  res.json({ data });
 }
 
 //Executive function to update the reservation information itself

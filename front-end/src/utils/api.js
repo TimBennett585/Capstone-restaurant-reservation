@@ -31,6 +31,8 @@ headers.append("Content-Type", "application/json");
  */
 async function fetchJson(url, options, onCancel) {
   try {
+    console.log("Fetching:", url); // Log the constructed URL
+
     const response = await fetch(url, options);
 
     console.log("Fetch Response:", response);
@@ -63,12 +65,14 @@ async function fetchJson(url, options, onCancel) {
 // Example modification in listReservations function
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
-  return await fetchJson(url, { headers, signal }, [])
-    .then(formatReservationDate)
-    .then(formatReservationTime);
+  if (params && Object.keys(params).length > 0) {
+    Object.entries(params).forEach(([key, value]) =>
+      url.searchParams.append(key, value.toString())
+    );
+  }
+  return await fetchJson(url, { headers, signal }, []);
+  //.then(formatReservationDate)
+  //.then(formatReservationTime);
 }
 
 /**
@@ -181,24 +185,11 @@ export async function setReservationStatus(reservation_id, status, signal) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
   const options = {
     method: "PUT",
+    mode: "cors",
     headers,
     body: JSON.stringify({ data: { status } }),
     signal,
   };
 
-  try {
-    const response = await fetch(url, options);
-    const responseData = await response.json();
-    console.log("Set Reservation Status Response:", responseData);
-
-    return {
-      redirected: response.redirected,
-      url: response.url,
-      status: response.status,
-      ok: response.ok,
-    };
-  } catch (error) {
-    console.error("Error in setReservationStatus:", error);
-    return Promise.reject(error);
-  }
+  return await fetchJson(url, options);
 }
