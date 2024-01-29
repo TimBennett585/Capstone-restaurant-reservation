@@ -20,62 +20,85 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const [currentDate, setCurrentDate] = useState(today());
   const [queryDate, setQueryDate] = useState(query.get("date"));
 
-  useEffect(loadDashboard, [date]);
-
-  async function loadDashboard() {
-    console.log("Loading Dashboard for date:", date);
+  useEffect(() => {
     const abortController = new AbortController();
-    setReservationsError(null);
 
-    try {
-      const [reservationsResponse, tablesResponse] = await Promise.all([
-        listReservations({ date }, abortController.signal),
-        listTables(abortController.signal),
-      ]);
+    async function fetchData() {
+      try {
+        const [reservationsResponse] = await Promise.all([
+          listReservations({ date: queryDate }, abortController.signal),
+        ]);
 
-      const formattedReservations = reservationsResponse.map((reservation) => ({
-        ...reservation,
-        reservation_date: formatAsDate(reservation.reservation_date),
-        reservation_time: formatAsTime(reservation.reservation_time),
-      }));
-      console.log(formattedReservations);
-      setReservations(formattedReservations);
-      setTables(tablesResponse);
-    } catch (error) {
-      setReservationsError(error);
-    } finally {
-      abortController.abort();
+        const formattedReservations = reservationsResponse.map(
+          (reservation) => ({
+            ...reservation,
+            reservation_date: formatAsDate(reservation.reservation_date),
+            reservation_time: formatAsTime(reservation.reservation_time),
+          })
+        );
+
+        setReservations(formattedReservations);
+      } catch (error) {
+        setReservationsError(error);
+      } finally {
+        // Ensure the abort signal is always called, even on success
+        abortController.abort();
+      }
     }
-  }
 
-  // this use effect checks to the route, if it specifies a date, change the current date to the parameter
+    fetchData();
+
+    // Cleanup function to abort ongoing fetch when the component unmounts
+    return () => abortController.abort();
+  }, [queryDate]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    async function fetchTables() {
+      try {
+        const tablesResponse = await listTables(abortController.signal);
+        setTables(tablesResponse);
+      } catch (error) {
+        // Handle error, e.g., set an error state
+      } finally {
+        abortController.abort();
+      }
+    }
+
+    fetchTables();
+
+    return () => abortController.abort();
+  }, []); // Empty dependency array to run once on mount
+
   useEffect(() => {
     if (queryDate) {
-      setCurrentDate(queryDate);
+      date = queryDate;
     }
   }, [queryDate]);
 
   function handleNext() {
-    setCurrentDate(next(currentDate));
+    const nextDate = next(date);
+    history.push(`/dashboard?date=${nextDate}`);
   }
 
   function handlePrevious() {
-    setCurrentDate(previous(currentDate));
+    const previousDate = previous(date);
+    history.push(`/dashboard?date=${previousDate}`);
   }
 
   function handleToday() {
-    setCurrentDate(today());
-    history.push("/dashboard");
+    const todayDay = today();
+    history.push(`/dashboard?date=${todayDay}`);
   }
 
   return (
     <main>
       <h1>Dashboard</h1>
       <div>
-        <h4>Reservations for date: {currentDate}</h4>
+        <h4>Reservations for date: {date}</h4>
       </div>
       <div className="row">
         <div className="btn-group" role="group" aria-label="Button Group">
@@ -124,9 +147,7 @@ function Dashboard({ date }) {
           {reservations.map((reservation, index) => (
             <ReservationsList
               reservation={reservation}
-              date={currentDate}
               key={index}
-              loadDashboard={loadDashboard}
             />
           ))}
         </tbody>
@@ -147,7 +168,6 @@ function Dashboard({ date }) {
             <TablesList
               table={table}
               key={index}
-              loadDashboard={loadDashboard}
             />
           ))}
         </tbody>

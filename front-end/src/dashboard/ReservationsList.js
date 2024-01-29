@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { setReservationStatus } from "../utils/api";
 import { formatAsDate, formatAsTime } from "../utils/date-time";
 
-function ReservationsList({ reservation, date, loadDashboard }) {
+function ReservationsList({ reservation }) {
   const [error, setError] = useState(null);
   const history = useHistory();
 
@@ -23,7 +23,6 @@ function ReservationsList({ reservation, date, loadDashboard }) {
       try {
         await cancelReservation(reservationID);
         afterCancellation();
-        loadDashboard();
       } catch (error) {
         setError(error);
       }
@@ -52,52 +51,7 @@ function ReservationsList({ reservation, date, loadDashboard }) {
   }
 
   //Lists reservations based on date and/or "status"
-  if (
-    reservation.reservation_date === date &&
-    reservation.status !== "finished"
-  ) {
-    return (
-      <tr>
-        <th scope="row">{reservation.reservation_id}</th>
-        <td>{reservation.first_name}</td>
-        <td>{reservation.last_name}</td>
-        <td>{reservation.mobile_number}</td>
-        <td>{reservation.reservation_date}</td>
-        <td>{reservation.reservation_time}</td>
-        <td>{reservation.people}</td>
-        <td data-reservation-id-status={reservation.reservation_id}>
-          {reservation.status}
-        </td>
-        <td>
-          {reservation.status === "booked" || reservation.status === null ? (
-            <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-              <button>Seat</button>
-            </Link>
-          ) : (
-            <></>
-          )}
-        </td>
-        <td>
-          {reservation.status === "booked" || reservation.status === null ? (
-            <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-              <button>Edit</button>
-            </Link>
-          ) : (
-            <></>
-          )}
-        </td>
-        <td data-reservation-id-cancel={reservation.reservation_id}>
-          {reservation.status === "booked" || reservation.status === null ? (
-            <button onClick={() => handleCancel(reservation.reservation_id)}>
-              Cancel
-            </button>
-          ) : (
-            <></>
-          )}
-        </td>
-      </tr>
-    );
-  } else if (!date) {
+  if (reservation.status !== "finished") {
     return (
       <tr>
         <th scope="row">{reservation.reservation_id}</th>

@@ -1,7 +1,7 @@
 import React from "react";
 import { finishTable } from "../utils/api";
 
-function TablesList({ table, loadDashboard }) {
+function TablesList({ table }) {
   async function handleFinish(tableId) {
     if (
       window.confirm(
@@ -9,7 +9,6 @@ function TablesList({ table, loadDashboard }) {
       )
     ) {
       await finishTable(tableId);
-      loadDashboard();
     }
   }
   return (
