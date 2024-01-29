@@ -161,18 +161,22 @@ async function read(req, res) {
 
 //Executive Function to list reservations
 async function list(req, res) {
+  console.log("Req.query for list:", req.query);
   const { date, mobile_number } = req.query;
 
   if (date) {
     const data = await service.listForDate(date);
-    res.json({ data });
+    console.log("List date data:", data);
+    return res.json({ data });
   }
   if (mobile_number) {
     const data = await service.search(mobile_number);
-    res.json({ data });
+    console.log("List by number data:", data);
+    return res.json({ data });
   } else {
     const data = await service.list();
-    res.json({ data });
+    console.log("Generic list data:", data);
+    return res.json({ data });
   }
 }
 

@@ -1,17 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import "./reservationForm.css";
 
 function ReservationForm({ handleSubmit, handleChange, reservation }) {
   const history = useHistory();
 
   return (
     <>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-2">
             <form onSubmit={handleSubmit} className="justify-content-center">
-              <div className="mb-3">
+              <div className="form-group">
                 <label htmlFor="first_name" className="form-label">
                   First Name
                   <input
@@ -112,9 +108,6 @@ function ReservationForm({ handleSubmit, handleChange, reservation }) {
                 Cancel
               </button>
             </form>
-          </div>
-        </div>
-      </div>
     </>
   );
 }

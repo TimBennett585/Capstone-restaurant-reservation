@@ -51,29 +51,34 @@ function SeatReservation() {
       <div>
         <h1>Seating Options for Reservation {reservation_id}</h1>
         <ErrorAlert error={error} />
-        <form onSubmit={handleSubmit}>
-          <h3>Select a table for the party:</h3>
-          <select
-            id="table_form"
-            name="table_id"
-            value={tablesMap.table_id}
-            onChange={handleChange}
-            required
+        <select
+          className="custom-select w-25 mb-2"
+          id="table_form"
+          name="table_id"
+          value={tablesMap.table_id}
+          aria-label="Default select example"
+          onChange={handleChange}
+          required
+        >
+          <option defaultValue={0}>Select a table:</option>
+          {tablesMap}
+        </select>
+        <div>
+          <button
+            className="btn btn-outline-primary btn-sm"
+            type="submit"
+            onClick={handleSubmit}
           >
-            <option value="">Table Name - Capacity</option>
-            {tablesMap}
-          </select>
-          <button className="btn btn-primary" type="submit">
             Submit
           </button>
           <button
-            className="btn btn-secondary mx-1"
+            className="btn btn-outline-secondary btn-sm mr-2"
             type="button"
             onClick={handleCancel}
           >
             Cancel
           </button>
-        </form>
+        </div>
       </div>
     </>
   );

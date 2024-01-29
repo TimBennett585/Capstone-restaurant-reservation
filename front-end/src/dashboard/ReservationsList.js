@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { setReservationStatus } from "../utils/api";
-import { formatAsDate, formatAsTime } from "../utils/date-time";
 
 function ReservationsList({ reservation }) {
   const [error, setError] = useState(null);
   const history = useHistory();
-
-  let formattedDate = formatAsDate(reservation.reservation_date);
 
   //Window confirm and change reservation status upon hitting Cancel
   async function handleCancel(reservationID) {
@@ -51,7 +48,7 @@ function ReservationsList({ reservation }) {
   }
 
   //Lists reservations based on date and/or "status"
-  if (reservation.status !== "finished") {
+  if (reservation) {
     return (
       <tr>
         <th scope="row">{reservation.reservation_id}</th>

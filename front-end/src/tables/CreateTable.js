@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import { createTable } from "../utils/api";
 import TableForm from "./TableForm";
-import "./tableForm.css";
 
 function CreateTable() {
   const [error, setError] = useState(null);
@@ -47,21 +46,15 @@ function CreateTable() {
 
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <h1>Add New Table</h1>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <ErrorAlert error={error} />
-          <TableForm
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            handleCancel={handleCancel}
-            table={table}
-          />
-        </div>
+      <div>
+        <h1>Add New Table</h1>
+        <ErrorAlert error={error} />
+        <TableForm
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          handleCancel={handleCancel}
+          table={table}
+        />
       </div>
     </>
   );

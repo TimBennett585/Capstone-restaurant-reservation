@@ -183,7 +183,6 @@ export async function setReservationStatus(reservation_id, status, signal) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
   const options = {
     method: "PUT",
-    mode: "cors",
     headers,
     body: JSON.stringify({ data: { status } }),
     signal,
