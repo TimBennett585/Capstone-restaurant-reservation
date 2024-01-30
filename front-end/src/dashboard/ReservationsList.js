@@ -13,10 +13,10 @@ function ReservationsList({ reservation }) {
         "Do you want to cancel this reservation? This cannot be undone."
       )
     ) {
-      console.log(
+/*       console.log(
         "Reservation Date before cancellation:",
         reservation.reservation_date
-      );
+      ); */
       try {
         await cancelReservation(reservationID);
         afterCancellation();

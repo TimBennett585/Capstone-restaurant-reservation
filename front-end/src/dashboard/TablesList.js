@@ -2,7 +2,7 @@ import React from "react";
 import { finishTable } from "../utils/api";
 import { useHistory } from "react-router-dom";
 
-function TablesList({ table }) {
+function TablesList({ table, loadTables }) {
   const history = useHistory();
 
   async function handleFinish(tableId) {
@@ -11,7 +11,10 @@ function TablesList({ table }) {
         "Is this table ready to seat new guests? This cannot be undone."
       )
     ) {
-      await finishTable(tableId).then(history.push("/"));
+      await finishTable(tableId).then((response) => {
+        console.log("response: ", response);
+        loadTables();
+      });
     }
   }
   return (

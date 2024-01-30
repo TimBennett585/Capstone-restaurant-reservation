@@ -8,7 +8,7 @@ const { table } = require("../db/connection");
 function bodyDataHas(propertyName) {
   return function (req, res, next) {
     const { data = {} } = req.body;
-    console.log(req.body);
+    /* console.log(req.body); */
     if (data[propertyName]) {
       return next();
     }
@@ -53,7 +53,7 @@ function hasData(req, res, next) {
 
 //Verifies that the reservation, in fact, has an ID when seating
 function resHasId(req, res, next) {
-  console.log("Req body:", req.body);
+  /* console.log("Req body:", req.body); */
   const resId = req.body.data.reservation_id;
   if (resId) {
     return next();
@@ -80,7 +80,7 @@ function reservationNotSeated(req, res, next) {
 //Validates that the table does not already have a reservation seated at it
 function openTable(req, res, next) {
   const table = res.locals.table;
-  console.log("Open Table table:", table);
+  /* console.log("Open Table table:", table); */
   if (!table.reservation_id) {
     return next();
   }
@@ -93,7 +93,7 @@ function openTable(req, res, next) {
 //Validates that the table currently has a party seated at it
 function filledTable(req, res, next) {
   const table = res.locals.table;
-  console.log("Filled table table:", table);
+  /* console.log("Filled table table:", table); */
   if (table.reservation_id) {
     return next();
   }
@@ -119,9 +119,9 @@ function canAccommodateRes(req, res, next) {
 
 //Executive function to determine if the inputted tableID exists
 async function tableExists(req, res, next) {
-  console.log("Req Params:", req.params);
+  /* console.log("Req Params:", req.params); */
   const { table_id } = req.params;
-  console.log("Table ID:", table_id);
+  /* console.log("Table ID:", table_id); */
 
   const table = await service.readTable(table_id);
 
@@ -137,12 +137,12 @@ async function tableExists(req, res, next) {
 
 //Executive function to determine if the inputted reservation exists
 async function reservationExists(req, res, next) {
-  console.log("Res Exists Req Body:", req.body);
+  /* console.log("Res Exists Req Body:", req.body); */
   const resId = req.body.data.reservation_id;
-  console.log("Res exists ResID:", resId);
+  /* console.log("Res exists ResID:", resId); */
   const reservation = await service.readReservation(resId);
   //console.log("Reservation ID:", reservation.reservation_id);
-  console.log("Reservation information:", reservation);
+  /* console.log("Reservation information:", reservation); */
 
   if (reservation) {
     res.locals.reservation = reservation;
@@ -165,14 +165,14 @@ async function create(req, res) {
 //Executive function to list Tables
 async function list(req, res) {
   const data = await service.list();
-  console.log("Table Data:", data);
+  /* console.log("Table Data:", data); */
   res.json({ data });
 }
 
 //Executive function to read information on specific table
 async function read(req, res) {
   const data = req.locals.table;
-  console.log("Table info:", data);
+  /* console.log("Table info:", data); */
   res.json({ data });
 }
 

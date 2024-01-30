@@ -31,11 +31,11 @@ headers.append("Content-Type", "application/json");
  */
 async function fetchJson(url, options, onCancel) {
   try {
-    console.log("Fetching:", url); // Log the constructed URL
+    /* console.log("Fetching:", url); */ // Log the constructed URL
 
     const response = await fetch(url, options);
 
-    console.log("Fetch Response:", response);
+    /* console.log("Fetch Response:", response); */
 
     if (response.status === 204) {
       return null;
@@ -64,7 +64,7 @@ async function fetchJson(url, options, onCancel) {
 
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
-  console.log("Params:", params);
+  /* console.log("Params:", params); */
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
@@ -94,7 +94,7 @@ export async function createReservation(reservation, signal, data) {
 
   try {
     const response = await fetchJson(url, options, {});
-    console.log("Create Reservation Response:", response); // Log the entire response
+    /* console.log("Create Reservation Response:", response); */ // Log the entire response
     return response;
   } catch (error) {
     // Handle errors as needed
@@ -129,10 +129,10 @@ export async function sitReservation(table_id, reservation_id, signal) {
     body: JSON.stringify({ data: { reservation_id } }),
     signal,
   };
-  console.log("Sit Options:", options);
+  /* console.log("Sit Options:", options); */
   try {
     const response = await fetchJson(url, options);
-    console.log("Sit Reservation Response:", response);
+    /* console.log("Sit Reservation Response:", response); */
     return response;
   } catch (error) {
     console.error("Error in sitReservation:", error);
@@ -149,10 +149,10 @@ export async function finishTable(table_id, signal) {
     body: JSON.stringify({ data: { table_id } }),
     signal,
   };
-  console.log("FinishTable Options:", options);
+  /* console.log("FinishTable Options:", options); */
   try {
     const response = await fetchJson(url, options);
-    console.log("FinishTable Response:", response);
+    /* console.log("FinishTable Response:", response); */
     return response;
   } catch (error) {
     console.error("Error in finishTable:", error);

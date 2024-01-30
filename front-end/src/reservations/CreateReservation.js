@@ -22,7 +22,7 @@ function CreateReservation() {
       ...reservation,
       [target.name]: target.value,
     });
-    console.log(reservation);
+    /* console.log(reservation); */
   };
 
   const handleSubmit = (event) => {

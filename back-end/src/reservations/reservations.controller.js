@@ -8,7 +8,7 @@ const { isValid, parseISO, parse } = require("date-fns");
 function bodyDataHas(propertyName) {
   return function (req, res, next) {
     const { data = {} } = req.body;
-    console.log(req.body);
+    /* console.log(req.body); */
     if (data[propertyName]) {
       return next();
     }
@@ -57,7 +57,7 @@ function peopleNumberIsValid(req, res, next) {
 function dateIsOpen(req, res, next) {
   const { data: { reservation_date } = {} } = req.body;
   const day = new Date(reservation_date).getUTCDay();
-  console.log("Day:", day);
+  /* console.log("Day:", day); */
 
   if (day !== 2) {
     return next();
@@ -73,9 +73,9 @@ function dateIsOpen(req, res, next) {
 function dateIsInFuture(req, res, next) {
   const { data: { reservation_date, reservation_time } = {} } = req.body;
   const today = Date.now();
-  console.log("Today:", today);
+  /* console.log("Today:", today); */
   const date = new Date(`${reservation_date} ${reservation_time}`).valueOf();
-  console.log("Date:", date);
+  /* console.log("Date:", date); */
 
   if (date > today) {
     return next();
@@ -139,8 +139,8 @@ function reservationFinished(req, res, next) {
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
   const reservation = await service.read(reservation_id);
-  console.log("Reservation ID:", reservation_id);
-  console.log("Reservation information:", reservation);
+  /* console.log("Reservation ID:", reservation_id);
+  console.log("Reservation information:", reservation); */
 
   if (reservation) {
     res.locals.reservation = reservation;
@@ -161,31 +161,34 @@ async function read(req, res) {
 
 //Executive Function to list reservations
 async function list(req, res) {
-  console.log("Req.query for list:", req.query);
+  /* console.log("Req.query for list:", req.query); */
   const { date, mobile_number } = req.query;
 
   if (date) {
     const data = await service.listForDate(date);
-    console.log("List date data:", data);
+    /* console.log("List date data:", data); */
     return res.json({ data });
   }
   if (mobile_number) {
     const data = await service.search(mobile_number);
-    console.log("List by number data:", data);
+    /* console.log("List by number data:", data); */
     return res.json({ data });
   } else {
     const data = await service.list();
-    console.log("Generic list data:", data);
+    /* console.log("Generic list data:", data); */
     return res.json({ data });
   }
 }
 
 //Executive function to create a new reservation
 async function create(req, res) {
-  console.log("Request Body:", req.body);
+  /* console.log("Request Body:", req.body); */
+
+  req.body.status = "booked";
+
   const newReservation = await service.create(req.body.data);
 
-  console.log(newReservation);
+  /* console.log(newReservation); */
   res.status(201).json({ data: newReservation });
 }
 
@@ -205,7 +208,7 @@ async function updateReservation(req, res) {
   const reservation = req.body.data;
   const data = await service.update(reservation);
   res.status(200).json({ data });
-  console.log("Update Status Data:", data);
+  /* console.log("Update Status Data:", data); */
 }
 
 module.exports = {

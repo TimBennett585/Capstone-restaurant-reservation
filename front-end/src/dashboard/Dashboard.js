@@ -53,24 +53,13 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }, [date]);
 
-  useEffect(() => {
+  function loadTables() {
     const abortController = new AbortController();
-
-    async function fetchTables() {
-      try {
-        const tablesResponse = await listTables(abortController.signal);
-        setTables(tablesResponse);
-      } catch (error) {
-        // Handle error, e.g., set an error state
-      } finally {
-        abortController.abort();
-      }
-    }
-
-    fetchTables();
-
+    listTables(abortController.signal).then(setTables);
     return () => abortController.abort();
-  }, []); // Empty dependency array to run once on mount
+  }
+
+  useEffect(loadTables, []);
 
   useEffect(() => {
     if (queryDate) {
@@ -171,7 +160,7 @@ function Dashboard({ date }) {
           </thead>
           <tbody className="table-group-divider">
             {tables.map((table, index) => (
-              <TablesList table={table} key={index} />
+              <TablesList table={table} key={index} loadTables={loadTables} />
             ))}
           </tbody>
         </table>
