@@ -21,37 +21,30 @@ function Dashboard({ date }) {
   const [reservationsError, setReservationsError] = useState(null);
   const [queryDate, setQueryDate] = useState(query.get("date"));
 
-  useEffect(() => {
+  async function loadDashboard() {
     const abortController = new AbortController();
+    setReservationsError(null);
+    try {
+      const [reservationsResponse] = await Promise.all([
+        listReservations({ date }, abortController.signal),
+      ]);
 
-    async function fetchData() {
-      try {
-        const [reservationsResponse] = await Promise.all([
-          listReservations({ date }, abortController.signal),
-        ]);
+      const formattedReservations = reservationsResponse.map((reservation) => ({
+        ...reservation,
+        reservation_date: formatAsDate(reservation.reservation_date),
+        reservation_time: formatAsTime(reservation.reservation_time),
+      }));
 
-        const formattedReservations = reservationsResponse.map(
-          (reservation) => ({
-            ...reservation,
-            reservation_date: formatAsDate(reservation.reservation_date),
-            reservation_time: formatAsTime(reservation.reservation_time),
-          })
-        );
-
-        setReservations(formattedReservations);
-      } catch (error) {
-        setReservationsError(error);
-      } finally {
-        // Ensure the abort signal is always called, even on success
-        abortController.abort();
-      }
+      setReservations(formattedReservations);
+    } catch (error) {
+      setReservationsError(error);
+    } finally {
+      // Ensure the abort signal is always called, even on success
+      abortController.abort();
     }
+  }
 
-    fetchData();
-
-    // Cleanup function to abort ongoing fetch when the component unmounts
-    return () => abortController.abort();
-  }, [date]);
+  useEffect(loadDashboard, [date]);
 
   function loadTables() {
     const abortController = new AbortController();
@@ -160,7 +153,7 @@ function Dashboard({ date }) {
           </thead>
           <tbody className="table-group-divider">
             {tables.map((table, index) => (
-              <TablesList table={table} key={index} loadTables={loadTables} />
+              <TablesList table={table} key={index} loadTables={loadTables} loadDashboard={loadDashboard} />
             ))}
           </tbody>
         </table>

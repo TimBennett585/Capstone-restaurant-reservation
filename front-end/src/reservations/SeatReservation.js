@@ -22,9 +22,8 @@ function SeatReservation() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController();
-
     sitReservation(tableInfo.table_id, reservation_id)
-      .then(() => history.push("/"))
+      .then(() => history.push("/dashboard"))
       .catch(setError);
     return () => abortController.abort();
   };

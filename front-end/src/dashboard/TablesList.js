@@ -1,9 +1,14 @@
 import React from "react";
 import { finishTable } from "../utils/api";
 import { useHistory } from "react-router-dom";
+import useQuery from "../utils/useQuery";
+import { formatAsDate } from "../utils/date-time";
 
-function TablesList({ table, loadTables }) {
+function TablesList({ table, loadTables, loadDashboard }) {
   const history = useHistory();
+  const query = useQuery();
+  let date = query.get("date");
+  let formattedDate = formatAsDate(date);
 
   async function handleFinish(tableId) {
     if (
@@ -13,6 +18,7 @@ function TablesList({ table, loadTables }) {
     ) {
       await finishTable(tableId).then((response) => {
         console.log("response: ", response);
+        loadDashboard();
         loadTables();
       });
     }
