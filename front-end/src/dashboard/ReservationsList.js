@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { setReservationStatus } from "../utils/api";
 
-function ReservationsList({ reservation }) {
+function ReservationsList({ reservation, loadDashboard }) {
   const [error, setError] = useState(null);
   const history = useHistory();
 
@@ -44,7 +44,7 @@ function ReservationsList({ reservation }) {
   function afterCancellation() {
     // Additional actions after successful cancellation
     // For example, updating the UI or triggering a reload
-    history.push("/dashboard");
+    loadDashboard();
   }
 
   //Lists reservations based on date and/or "status"

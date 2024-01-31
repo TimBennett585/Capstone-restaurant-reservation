@@ -63,7 +63,7 @@ function SearchReservations() {
           </div>
           {reservations.length !== 0 ? (
             <div className="row d-md-flex mb-3">
-              <div className="table-responsive">
+              <div className="table-responsive table-striped">
                 <table className="table table-sm w-75 text-center mb-5">
                   <thead>
                     <tr>

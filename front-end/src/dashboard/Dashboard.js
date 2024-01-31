@@ -114,7 +114,7 @@ function Dashboard({ date }) {
       </div>
       <ErrorAlert error={reservationsError} />
 
-      <div className="table-responsive">
+      <div className="table-responsive table-striped">
         <table className="table table-sm w-75 text-center mb-5">
           <thead>
             <tr>
@@ -133,13 +133,13 @@ function Dashboard({ date }) {
           </thead>
           <tbody className="table-group-divider">
             {reservations.map((reservation, index) => (
-              <ReservationsList reservation={reservation} key={index} />
+              <ReservationsList reservation={reservation} key={index} loadDashboard={loadDashboard} />
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="table-responsive">
+      <div className="table-responsive table-striped">
         <div>
           <h4>Current Table Status</h4>
         </div>

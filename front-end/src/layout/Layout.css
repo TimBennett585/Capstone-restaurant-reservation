@@ -1,4 +1,14 @@
 .side-bar {
-  background-color: #393a44;
+  background-color: #878787;
   min-width: 200px;
+  font-family: Univers;
+}
+
+h1, h2, h3, h4, th {
+  font-family: Univers;
+}
+
+tr, td, button {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #202022;
 }
