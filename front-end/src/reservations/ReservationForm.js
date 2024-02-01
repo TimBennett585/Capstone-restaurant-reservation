@@ -45,6 +45,7 @@ function ReservationForm({ handleSubmit, handleChange, reservation }) {
                     id="mobile_number"
                     name="mobile_number"
                     placeholder="555-555-5555"
+                    onkeypress="return /[0-9-]/i.test(event.key)"
                     required
                     onChange={handleChange}
                     value={reservation.mobile_number}
